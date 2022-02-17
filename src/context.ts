@@ -21,7 +21,7 @@ const Context: ContextInterface = {
   SCOPES: new AuthScopes([]),
   HOST_NAME: '',
   API_VERSION: ApiVersion.Unstable,
-  IS_EMBEDDED_APP: true,
+  IS_EMBEDDED_APP: false,
   IS_PRIVATE_APP: false,
   SESSION_STORAGE: new MemorySessionStorage(),
 
