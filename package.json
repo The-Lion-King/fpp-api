@@ -1,5 +1,5 @@
 {
-  "name": "@fpp/fpp-node-api",
+  "name": "fpp-node-api",
   "version": "1.0.0",
   "description": "Funpinpin API Library for Node - accelerate development with support for authentication, graphql proxy, webhooks",
   "main": "dist/index.js",
