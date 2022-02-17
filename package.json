@@ -1,6 +1,6 @@
 {
-  "name": "@fpp/fpp-api",
-  "version": "2.1.0",
+  "name": "@fpp/fpp-node-api",
+  "version": "1.0.0",
   "description": "Funpinpin API Library for Node - accelerate development with support for authentication, graphql proxy, webhooks",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -15,14 +15,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Shopify/shopify-node-api.git"
+    "url": "git+https://github.com/The-Lion-King/fpp-api.git"
   },
   "bugs": {
-    "url": "https://github.com/Shopify/shopify-node-api/issues"
+    "url": "https://github.com/The-Lion-King/fpp-api.git/issues"
   },
-  "homepage": "https://github.com/Shopify/shopify-node-api",
-  "author": "Funpinpin Inc.",
-  "license": "MIT",
+  "homepage": "https://github.com/The-Lion-King/fpp-api.git",
+  "author": "the-lion-king",
   "keywords": [
     "funpinpin",
     "node",
