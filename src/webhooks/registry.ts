@@ -73,11 +73,11 @@ function isSuccess(
 }
 
 function versionSupportsEndpointField() {
-  return FppUtilities.versionCompatible(ApiVersion.July20);
+  return FppUtilities.versionCompatible(ApiVersion.January22);
 }
 
 function versionSupportsPubSub() {
-  return FppUtilities.versionCompatible(ApiVersion.July21);
+  return FppUtilities.versionCompatible(ApiVersion.January22);
 }
 
 function validateDeliveryMethod(deliveryMethod: DeliveryMethod) {
