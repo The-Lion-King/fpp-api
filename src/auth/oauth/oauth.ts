@@ -26,11 +26,11 @@ import {
 const FppOAuth = {
   SESSION_COOKIE_NAME: 'fpp_app_session',
   async beginAuth(
-    request: http.IncomingMessage,
-    response: http.ServerResponse,
-    shop: string,
-    redirectPath: string,
-    isOnline = true,
+      request: http.IncomingMessage,
+      response: http.ServerResponse,
+      shop: string,
+      redirectPath: string,
+      isOnline = true,
   ): Promise<string> {
     Context.throwIfUninitialized();
     Context.throwIfPrivateApp('Cannot perform OAuth for private apps');
@@ -43,17 +43,17 @@ const FppOAuth = {
     const state = nonce();
 
     const session = new Session(
-      isOnline ? uuidv4() : this.getOfflineSessionId(shop),
-      shop,
-      state,
-      isOnline,
+        isOnline ? uuidv4() : this.getOfflineSessionId(shop),
+        shop,
+        state,
+        isOnline,
     );
 
     const sessionStored = await Context.SESSION_STORAGE.storeSession(session);
 
     if (!sessionStored) {
       throw new FppErrors.SessionStorageError(
-        'OAuth Session could not be saved. Please check your session storage functionality.',
+          'OAuth Session could not be saved. Please check your session storage functionality.',
       );
     }
 
@@ -81,9 +81,9 @@ const FppOAuth = {
   },
 
   async validateAuthCallback(
-    request: http.IncomingMessage,
-    response: http.ServerResponse,
-    query: AuthQuery,
+      request: http.IncomingMessage,
+      response: http.ServerResponse,
+      query: AuthQuery,
   ): Promise<SessionInterface> {
     Context.throwIfUninitialized();
     Context.throwIfPrivateApp('Cannot perform OAuth for private apps');
@@ -96,16 +96,16 @@ const FppOAuth = {
     const sessionCookie = this.getCookieSessionId(request, response);
     if (!sessionCookie) {
       throw new FppErrors.CookieNotFound(
-        `Cannot complete OAuth process. Could not find an OAuth cookie for shop url: ${query.shop}`,
+          `Cannot complete OAuth process. Could not find an OAuth cookie for shop url: ${query.shop}`,
       );
     }
 
     let currentSession = await Context.SESSION_STORAGE.loadSession(
-      sessionCookie,
+        sessionCookie,
     );
     if (!currentSession) {
       throw new FppErrors.SessionNotFound(
-        `Cannot complete OAuth process. No session found for the specified shop url: ${query.shop}`,
+          `Cannot complete OAuth process. No session found for the specified shop url: ${query.shop}`,
       );
     }
 
@@ -133,8 +133,11 @@ const FppOAuth = {
     if (currentSession.isOnline) {
       const responseBody = postResponse.body as OnlineAccessResponse;
       const {access_token, scope, ...rest} = responseBody; // eslint-disable-line @typescript-eslint/naming-convention
+      const expires_in = responseBody.expires_in
+          ? responseBody.expires_in
+          : 60 * 60 *24 *30;
       const sessionExpiration = new Date(
-        Date.now() + responseBody.expires_in * 1000,
+          Date.now() + expires_in * 1000,
       );
       currentSession.accessToken = access_token;
       currentSession.expires = sessionExpiration;
@@ -144,15 +147,15 @@ const FppOAuth = {
       if (Context.IS_EMBEDDED_APP) {
         const onlineInfo = currentSession.onlineAccessInfo as OnlineAccessInfo;
         const jwtSessionId = this.getJwtSessionId(
-          currentSession.shop,
-          `${onlineInfo.associated_user.id}`,
+            currentSession.shop,
+            `${onlineInfo.associated_user.id}`,
         );
         const jwtSession = Session.cloneSession(currentSession, jwtSessionId);
 
         const sessionDeleted = await Context.SESSION_STORAGE.deleteSession(currentSession.id);
         if (!sessionDeleted) {
           throw new FppErrors.SessionStorageError(
-            'OAuth Session could not be deleted. Please check your session storage functionality.',
+              'OAuth Session could not be deleted. Please check your session storage functionality.',
           );
         }
         currentSession = jwtSession;
@@ -173,15 +176,15 @@ const FppOAuth = {
     const sessionStored = await Context.SESSION_STORAGE.storeSession(currentSession);
     if (!sessionStored) {
       throw new FppErrors.SessionStorageError(
-        'OAuth Session could not be saved. Please check your session storage functionality.',
+          'OAuth Session could not be saved. Please check your session storage functionality.',
       );
     }
 
     return currentSession;
   },
   getCookieSessionId(
-    request: http.IncomingMessage,
-    response: http.ServerResponse,
+      request: http.IncomingMessage,
+      response: http.ServerResponse,
   ): string | undefined {
     const cookies = new Cookies(request, response, {
       secure: true,
@@ -198,9 +201,9 @@ const FppOAuth = {
     return `offline_${shop}`;
   },
   getCurrentSessionId(
-    request: http.IncomingMessage,
-    response: http.ServerResponse,
-    isOnline = true,
+      request: http.IncomingMessage,
+      response: http.ServerResponse,
+      isOnline = true,
   ): string | undefined {
     let currentSessionId: string | undefined;
 
@@ -210,7 +213,7 @@ const FppOAuth = {
         const matches = authHeader.match(/^Bearer (.+)$/);
         if (!matches) {
           throw new FppErrors.MissingJwtTokenError(
-            'Missing Bearer token in authorization header',
+              'Missing Bearer token in authorization header',
           );
         }
 
